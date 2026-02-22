@@ -37,6 +37,10 @@ onMounted(() => {
 <template>
   <div class="bg-gray-100 min-h-screen">
     <TabBar />
-    <RouterView :key="route.params.sessionId" />
+    <RouterView v-slot="{ Component }">
+      <KeepAlive>
+        <component :is="Component" :key="route.params.sessionId" />
+      </KeepAlive>
+    </RouterView>
   </div>
 </template>
