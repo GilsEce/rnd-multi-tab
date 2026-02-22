@@ -3,10 +3,13 @@ import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TabBar from './components/TabBar.vue'
 import { useTabManager } from './composables/useTabManager'
+import { useTabStorageCleanup } from './composables/useTabStorageCleanup'
 
 const route = useRoute()
 const router = useRouter()
 const { tabs, activeSessionId, addTab, switchTab } = useTabManager()
+
+useTabStorageCleanup(10000)
 
 onMounted(() => {
   if (tabs.value.length > 0) {

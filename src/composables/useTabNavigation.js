@@ -17,6 +17,7 @@ export function useTabNavigation(store = useTabStore(useRoute().params.sessionId
   }
 
   function syncRoute() {
+    if (route.params.sessionId !== store.sessionId) return
     store.setLastRoute(route)
   }
 
