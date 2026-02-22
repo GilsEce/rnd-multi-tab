@@ -28,13 +28,14 @@ export function useTabStore(sessionId) {
     }
 
     function cleanup() {
+      const persistKey = `tab-${sessionId}`
       const pinia = getActivePinia()
       if (pinia) {
-        const storeId = `tab-${sessionId}`
-        const store = pinia._s.get(storeId)
+        const store = pinia._s.get(persistKey)
         if (store) store.$dispose()
-        pinia._s.delete(storeId)
+        pinia._s.delete(persistKey)
       }
+      localStorage.removeItem(persistKey)
     }
 
     return {
