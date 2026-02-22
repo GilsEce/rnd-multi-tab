@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onActivated, onDeactivated, ref } from 'vue'
 import { useTabData } from '../composables/useTabData'
 import { useTabNavigation } from '../composables/useTabNavigation'
 import { usePageMeta } from '../composables/usePageMeta'
@@ -7,6 +7,15 @@ import { usePageMeta } from '../composables/usePageMeta'
 const { isLoading, data, load } = useTabData()
 const { navigateTo } = useTabNavigation()
 const { pageTitle, pageIcon } = usePageMeta({ title: 'Reports', icon: '📊' })
+
+
+onActivated(() => {
+  console.log('reports tab active')
+})
+
+onDeactivated(() => {
+  console.log('reports tab inactive')
+})
 
 const reports = ref([
   {
