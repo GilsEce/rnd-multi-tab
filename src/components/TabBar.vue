@@ -15,7 +15,6 @@ function startEdit(tab) {
 function onInputMounted(el) {
   if (el) {
     el.focus()
-    el.select()
   }
 }
 
