@@ -4,8 +4,8 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTabNavigation } from '../composables/useTabNavigation'
 import { usePageMeta } from '../composables/usePageMeta'
-import { useYupStoreValidation } from '../composables/useYupStoreValidation'
 import { useApplicationStore } from '../stores/useApplicationStore'
+import { useYupSubmit } from '../composables/useYupSubmit'
 
 const route = useRoute()
 const { navigateTo } = useTabNavigation()
@@ -30,27 +30,12 @@ const validationSchema = yup.object({
   profession: yup.string().trim().required('Profession is required'),
 })
 
-const {
-  errors,
-  defineField,
-  handleSubmitToStore,
-  isSubmitting,
-} = useYupStoreValidation({
-  schema: validationSchema,
-  store: applicationStore,
-})
-
-const [name, nameAttrs] = defineField('name')
-const [lastname, lastnameAttrs] = defineField('lastname')
-const [age, ageAttrs] = defineField('age')
-const [address, addressAttrs] = defineField('address')
-const [gender, genderAttrs] = defineField('gender')
-const [profession, professionAttrs] = defineField('profession')
-
 const submitted = computed(() => Boolean(applicationStore.submittedAt))
 
-const submitForm = handleSubmitToStore(() => {
-  applicationStore.markSubmitted()
+const { errors, isSubmitting, handleSubmit: submitForm } = useYupSubmit({
+  schema: validationSchema,
+  data: () => applicationStore.formData,
+  onSuccess: () => applicationStore.markSubmitted(),
 })
 </script>
 
@@ -62,8 +47,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
         <input
           id="name"
-          v-model="name"
-          v-bind="nameAttrs"
+          v-model="applicationStore.formData.name"
           type="text"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -74,8 +58,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Lastname</label>
         <input
           id="lastname"
-          v-model="lastname"
-          v-bind="lastnameAttrs"
+          v-model="applicationStore.formData.lastname"
           type="text"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -86,8 +69,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age</label>
         <input
           id="age"
-          v-model="age"
-          v-bind="ageAttrs"
+          v-model="applicationStore.formData.age"
           type="number"
           min="0"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -99,8 +81,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
         <textarea
           id="address"
-          v-model="address"
-          v-bind="addressAttrs"
+          v-model="applicationStore.formData.address"
           rows="3"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
@@ -111,8 +92,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
         <select
           id="gender"
-          v-model="gender"
-          v-bind="genderAttrs"
+          v-model="applicationStore.formData.gender"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option disabled value="">Select gender</option>
@@ -127,8 +107,7 @@ const submitForm = handleSubmitToStore(() => {
         <label for="profession" class="block text-sm font-medium text-gray-700 mb-1">Profession</label>
         <input
           id="profession"
-          v-model="profession"
-          v-bind="professionAttrs"
+          v-model="applicationStore.formData.profession"
           type="text"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
