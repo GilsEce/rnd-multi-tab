@@ -21,6 +21,11 @@ const router = createRouter({
         { path: 'products', name: 'products', component: () => import('../pages/ProductsPage.vue') },
         { path: 'customers', name: 'customers', component: () => import('../pages/CustomersPage.vue') },
         { path: 'reports', name: 'reports', component: () => import('../pages/ReportsPage.vue') },
+        {
+          path: 'application-form',
+          name: 'application-form',
+          component: () => import('../pages/ApplicationFormPage.vue'),
+        },
       ],
     },
   ],

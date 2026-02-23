@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 import { useTabStore } from './useTabStore'
+import { useApplicationStore } from './useApplicationStore'
 import router from '../router'
 
 const TAB_COLORS = ['blue', 'green', 'purple', 'orange', 'rose', 'cyan', 'amber', 'teal']
@@ -29,17 +30,24 @@ export const useTabsManagerStore = defineStore('tabs-manager', () => {
   }
 
   function closeTab(sessionId) {
-    const store = useTabStore(sessionId)
-    store.cleanup()
-
     const index = tabs.value.findIndex((t) => t.sessionId === sessionId)
     if (index === -1) return
+
+    const store = useTabStore(sessionId)
+    store.cleanup()
+    const applicationStore = useApplicationStore(sessionId)
+    applicationStore.cleanup()
 
     tabs.value.splice(index, 1)
 
     if (activeSessionId.value === sessionId && tabs.value.length > 0) {
       const nextIndex = Math.min(index, tabs.value.length - 1)
       switchTab(tabs.value[nextIndex].sessionId)
+      return
+    }
+
+    if (tabs.value.length === 0) {
+      activeSessionId.value = null
     }
   }
 

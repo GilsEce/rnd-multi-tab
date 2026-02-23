@@ -13,7 +13,8 @@ export function useTabNavigation(store = useTabStore(useRoute().params.sessionId
   }
 
   function isActive(name) {
-    return currentRouteName.value === name
+    const routeName = String(currentRouteName.value || '')
+    return routeName === name || routeName.startsWith(`${name}-`)
   }
 
   function syncRoute() {

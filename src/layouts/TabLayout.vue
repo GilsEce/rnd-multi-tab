@@ -22,6 +22,7 @@ const navItems = [
   { name: 'products', icon: '🛍️', label: 'Products' },
   { name: 'customers', icon: '👥', label: 'Customers' },
   { name: 'reports', icon: '📊', label: 'Reports' },
+  { name: 'application-form', icon: '📝', label: 'Application Form' },
 ]
 </script>
 
